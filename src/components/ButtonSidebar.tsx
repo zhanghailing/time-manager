@@ -1,4 +1,8 @@
+import { BreakItem } from '../types';
+
 interface ButtonSidebarProps {
+  uncheckedItems: BreakItem[];
+  onCheck: (id: string) => void;
   onAddToilet: () => void;
   onAddWater: () => void;
   onAddBreak: () => void;
@@ -17,6 +21,8 @@ const labelMap: Record<'toilet' | 'water' | 'break', string> = {
 };
 
 export function ButtonSidebar({
+  uncheckedItems,
+  onCheck,
   onAddToilet,
   onAddWater,
   onAddBreak,
@@ -29,17 +35,32 @@ export function ButtonSidebar({
 
   return (
     <div className="button-sidebar">
-      {handlers.map(({ type, handler }) => (
-        <button
-          key={type}
-          className="add-button"
-          onClick={handler}
-          title={`Add ${labelMap[type]}`}
-        >
-          <span className="button-emoji">{emojiMap[type]}</span>
-          <span className="button-label">+</span>
-        </button>
-      ))}
+      <div className="unchecked-items-section">
+        {uncheckedItems.map((item) => (
+          <button
+            key={item.id}
+            className="unchecked-item-button"
+            onClick={() => onCheck(item.id)}
+            title={`Check ${labelMap[item.type]}`}
+          >
+            <span className="button-emoji">{emojiMap[item.type]}</span>
+            <span className="button-label">{labelMap[item.type]}</span>
+          </button>
+        ))}
+      </div>
+      <div className="add-buttons-section">
+        {handlers.map(({ type, handler }) => (
+          <button
+            key={`add-${type}`}
+            className="add-button"
+            onClick={handler}
+            title={`Add ${labelMap[type]}`}
+          >
+            <span className="button-emoji">{emojiMap[type]}</span>
+            <span className="button-label">+</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

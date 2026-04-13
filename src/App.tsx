@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { BreakItem } from './types';
 import { loadState, saveState } from './storage';
-import { ChecklistItem } from './components/ChecklistItem';
 import { useGroupedLogs } from './hooks/useGroupedLogs';
 import { LogColumnView } from './components/LogColumnView';
 import { ButtonSidebar } from './components/ButtonSidebar';
@@ -70,18 +69,11 @@ export default function App() {
       <div className="main-layout">
         <div className="content-area">
           <h1 className="title">Body Break Checklist</h1>
-          <div className="checklist">
-            {groupedLogs.uncheckedItems.map((item) => (
-              <ChecklistItem
-                key={item.id}
-                item={item}
-                onCheck={handleCheckItem}
-              />
-            ))}
-          </div>
           <LogColumnView groupedLogs={groupedLogs} />
         </div>
         <ButtonSidebar
+          uncheckedItems={groupedLogs.uncheckedItems}
+          onCheck={handleCheckItem}
           onAddToilet={() => handleAddItem('toilet')}
           onAddWater={() => handleAddItem('water')}
           onAddBreak={() => handleAddItem('break')}
